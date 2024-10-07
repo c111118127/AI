@@ -27,6 +27,28 @@
 10	正式上線與評估	4	9
 
 ```mermaid
+gantt
+    title A Gantt Diagram Example
+
+    dateFormat  YYYY-MM-DD
+    axisFormat  %Y-%m-%d
+
+    訂定專題名稱與目標           :a1, 2024-10-01, 1d
+    專題內容討論與確認           :a2, after a1, 4d
+    需求與市場分析           :a3, after a1, 17d
+
+    任務分配與資源配置           :a4, after a2, 70d
+    系統設計          :a5, after a3, 10d
+
+    後端程式開發           :a6, after a4, 30d
+    前端設計與開發       :a7, after a5, 25d
+    系統整合測試           :a8, after a5, 20d
+    系統上線準備與測試          :a9, after a6, 25d
+    正式上線與評估        :a10, after a7, 20d
+    
+```
+
+```mermaid
 graph TD
     A[訂定專題名稱與目標] --> B[專題內容討論與確認]
     B --> C[需求與市場分析]
