@@ -154,7 +154,158 @@ graph TD
 3. 使用者可選擇下載或透過連結分享結果。
 
 ---
-
+### 分析圖
 ![分析圖](分析圖.png)
+### DBD
 ![DBD](DBD.jpg)
+### 分類圖
 ![分類圖](分類圖.png)
+---
+## 使用案例 1：輸入需求
+### 循序圖
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant Chatbot as 聊天機器人
+    participant GiftRecommenderAI as AI禮物推薦系統
+
+    User->>Chatbot: 啟動聊天機器人
+    Chatbot->>User: 選擇「開始推薦」
+    User->>Chatbot: 輸入對象性別（如「男性」）
+    User->>Chatbot: 提供預算範圍（如「500 - 1000 TWD」）
+    User->>Chatbot: 選擇興趣（如「籃球」）
+    
+    Chatbot->>GiftRecommenderAI: 傳遞需求條件
+    GiftRecommenderAI->>GiftRecommenderAI: 生成推薦禮品清單
+    GiftRecommenderAI-->>Chatbot: 傳回推薦結果
+    
+    Chatbot->>User: 顯示推薦禮品清單
+    
+    alt 條件不完整
+        Chatbot->>User: 提醒使用者補充資訊
+    end
+```
+### 活動圖
+```mermaid
+flowchart TD
+    Start[開始] --> A[啟動聊天機器人]
+    A --> B[選擇「開始推薦」]
+    B --> C[輸入對象性別（如「男性」）]
+    C --> D[提供預算範圍（如「500 - 1000 TWD」）]
+    D --> E[選擇興趣（如「籃球」）]
+    
+    E --> F{條件是否完整?}
+    F -->|是| G[系統生成推薦禮品清單]
+    G --> H[顯示推薦結果]
+    H --> End[結束]
+
+    F -->|否| I[提醒使用者補充資訊]
+    I --> C
+```
+## 使用案例 2：查看推薦結果 
+### 循序圖
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant Chatbot as 聊天機器人
+    participant GiftRecommenderAI as AI禮物推薦系統
+
+    User->>Chatbot: 請求查看推薦結果
+    Chatbot->>GiftRecommenderAI: 查詢推薦禮品清單
+    GiftRecommenderAI-->>Chatbot: 返回推薦結果列表
+
+    Chatbot->>User: 顯示推薦結果列表（圖片、描述、價格）
+    User->>Chatbot: 點擊查看禮品詳細資訊
+    Chatbot->>User: 顯示禮品詳細資訊
+
+    User->>User: 決定是否滿意推薦結果
+
+    alt 使用者滿意
+        User->>Chatbot: 滿意推薦
+    else 使用者不滿意
+        User->>Chatbot: 不滿意，調整需求
+        Chatbot->>User: 請輸入新需求
+    end
+
+    opt 無符合條件的推薦
+        Chatbot->>User: 提供類似商品或建議調整條件
+    end
+```
+### 活動圖
+```mermaid
+flowchart TD
+    Start[開始] --> A[系統展示推薦結果列表]
+    A --> B[每個選項包含圖片、描述與價格]
+    B --> C[使用者點擊查看禮品詳細資訊]
+
+    C --> D{使用者滿意推薦結果?}
+    D -->|是| End[結束]
+    D -->|否| E[調整需求]
+    E --> A
+
+    F{{有無符合條件的推薦?}}
+    F -->|有| A
+    F -->|無| G[提供類似商品或建議調整需求]
+    G --> E
+```
+## 使用案例 3：提供反饋  
+### 循序圖
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant System as 系統
+    participant Support as 客服
+
+    User->>System: 選擇「滿意」或「不滿意」推薦結果
+    alt 不滿意
+        System->>User: 提供替代建議
+        User->>System: 評估替代建議
+        alt 替代建議滿意
+            System->>User: 感謝反饋，記錄反饋
+        else 替代建議不滿意
+            System->>Support: 導向人工客服
+            Support->>User: 提供進一步協助
+        end
+    else 滿意
+        System->>User: 感謝反饋，記錄反饋
+    end
+```
+### 活動圖
+```mermaid
+graph TD
+    A[使用者選擇滿意或不滿意] --> B{滿意？}
+    B -- 是 --> C[系統記錄反饋]
+    C --> D[優化未來推薦]
+    B -- 否 --> E[系統提供替代建議]
+    E --> F[使用者評估替代建議]
+    F --> G{替代建議滿意？}
+    G -- 是 --> C
+    G -- 否 --> H[導向人工客服]
+    H --> I[客服提供進一步協助]
+```
+## 使用案例 4：匯出推薦結果  
+### 循序圖
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant System as 系統
+
+    User->>System: 點擊「匯出結果」按鈕
+    System->>User: 產生包含推薦商品的 PDF
+    User->>System: 選擇下載或分享結果
+    alt 下載
+        System->>User: 提供 PDF 下載鏈接
+    else 分享
+        System->>User: 生成分享連結
+        User->>System: 分享連結給其他人
+    end
+```
+###活動圖
+```mermaid
+graph TD
+    A[使用者點擊「匯出結果」按鈕] --> B[系統產生包含推薦商品的 PDF]
+    B --> C{使用者選擇}
+    C -- 下載 --> D[下載 PDF]
+    C -- 分享 --> E[生成分享連結]
+    E --> F[分享連結給其他人]
+```
